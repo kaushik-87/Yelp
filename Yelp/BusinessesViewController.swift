@@ -36,7 +36,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.businessesTableView.rowHeight = UITableViewAutomaticDimension
+        self.businessesTableView.estimatedRowHeight = 100
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
@@ -51,18 +52,18 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         )
         
          //Example of Yelp search with more search options specified
-        Business.searchWithTerm(term: "Restaurants", sort: YelpSortMode.distance, categories: ["asianfusion", "burgers"], deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
-            
-            self.businesses = businesses
-            if let businesses = businesses {
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
-            
-        }
-    )
+//        Business.searchWithTerm(term: "Restaurants", sort: YelpSortMode.distance, categories: ["asianfusion", "burgers"], deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
+//            
+//            self.businesses = businesses
+//            if let businesses = businesses {
+//                for business in businesses {
+//                    print(business.name!)
+//                    print(business.address!)
+//                }
+//            }
+//            
+//        }
+//    )
         
     }
     
