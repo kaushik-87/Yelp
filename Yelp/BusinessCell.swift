@@ -23,10 +23,14 @@ class BusinessCell: UITableViewCell {
             nameLabel.text = business.name
             addressLabel.text = business.address
             reviewsCountLabel.text = "\(business.reviewCount ?? 0) Reviews"
-            thumbImageView.setImageWith(business.imageURL!)
+            if (business.imageURL != nil){
+                thumbImageView.setImageWith(business.imageURL!)
+            }
             categoriesLabel.text = business.categories
             distanceLabel.text = business.distance
-            ratingsImageView.setImageWith(business.ratingImageURL!)
+            if (business.ratingImageURL != nil) {
+                ratingsImageView.setImageWith(business.ratingImageURL!)
+            }
         }
     }
     override func awakeFromNib() {
