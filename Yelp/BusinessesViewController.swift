@@ -8,7 +8,85 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, FiltersViewControllerDelegate {
+    
+    func filtersViewController(viewController: FiltersViewController, didSelectValuesForFilter filter: Filter) {
+        self.currentFilter = filter
+
+        var radius: NSNumber?
+        if let distance = filter.distanceFilter as String? {
+            radius = radiusInNumbers(distance: distance)
+            
+        }
+        
+        var sortMode = YelpSortMode.bestMatched
+        if let sortBy = filter.sortByFilter as String? {
+            sortMode = sortModeFromString(sortModeInString: sortBy)
+            
+        }
+
+        Business.searchWithTerm(term: "Restaurants", sort: sortMode, categories: filter.categories, radius:radius, deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
+
+          self.businesses = businesses
+          if let businesses = businesses {
+              for business in businesses {
+                  print(business.name!)
+                  print(business.address!)
+              }
+          }
+            
+            
+        self.businessesTableView.reloadData()
+          
+      }
+  )
+    }
+    
+    func radiusInNumbers(distance : String) -> NSNumber? {
+
+        var radiusInMeters : NSNumber?
+        switch distance {
+        case "0.3 miles":
+            radiusInMeters = 0.3/0.00062137 as NSNumber
+            break
+        case "1 mile":
+            radiusInMeters = 1/0.00062137 as NSNumber
+            break
+        case "5 miles":
+            radiusInMeters = 5/0.00062137 as NSNumber
+            break
+        case "20 miles":
+            radiusInMeters = 20/0.00062137 as NSNumber
+            break
+        default:
+            radiusInMeters = nil
+            break
+        }
+        return radiusInMeters
+    }
+    
+    func sortModeFromString(sortModeInString : String) -> YelpSortMode {
+        
+        var sortMode = YelpSortMode.bestMatched
+        
+        switch sortModeInString {
+        case "Distance":
+            sortMode = YelpSortMode.distance
+            break
+        case "Rating":
+            sortMode = YelpSortMode.highestRated
+            break
+        case "Most Reviewed":
+            sortMode = YelpSortMode.highestRated
+            break
+        default:
+            sortMode = YelpSortMode.bestMatched
+            break
+        }
+        return sortMode
+    }
+    
+    
     @available(iOS 2.0, *)
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BusinessCell", for: indexPath) as! BusinessCell
@@ -34,6 +112,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var businessesTableView: UITableView!
     var businesses: [Business]!
     var currentSearchString : String = ""
+    var currentFilter: Filter?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +127,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         self.businessesTableView.estimatedRowHeight = 100
 
         searchForBusinessWith(name: currentSearchString)
+        
+        self.currentFilter = Filter.init()
         
          //Example of Yelp search with more search options specified
 //        Business.searchWithTerm(term: "Restaurants", sort: YelpSortMode.distance, categories: ["asianfusion", "burgers"], deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
@@ -86,15 +167,22 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "FiltersViewController" {
+         
+            guard let filtersNavController = segue.destination as? UINavigationController else {
+                return
+            }
+            guard let destinationVC = filtersNavController.topViewController as? FiltersViewController else {
+                return
+            }
+            
+            destinationVC.currentFilter = self.currentFilter
+            destinationVC.delegate = self
+        }
+    }
+ 
     
     
     public func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {

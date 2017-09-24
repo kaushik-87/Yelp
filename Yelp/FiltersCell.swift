@@ -14,39 +14,32 @@ enum FilterCellStyle {
     case FilterCellStyleCheckMark
 }
 
+@objc protocol FiltersCellDelegate {
+    @objc optional func filtersCell(filterCell: FiltersCell, didChangeValue value: Bool)
+}
+
 class FiltersCell: UITableViewCell {
 
     @IBOutlet weak var filterLabel: UILabel!
     @IBOutlet weak var accessoryImageView: UIImageView!
     
     @IBOutlet weak var filterSwitch: UISwitch!
+    weak var delegate : FiltersCellDelegate?
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        filterSwitch.addTarget(self, action: #selector(switchValueChanged), for: UIControlEvents.valueChanged)
     }
 
+    func switchValueChanged() -> Void {
+        
+        if delegate != nil {
+            delegate?.filtersCell?(filterCell: self, didChangeValue: self.filterSwitch.isOn)
+        }
+        
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
-//        if (selected){
-//            self.accessoryImageView.image = UIImage(named: "Checkmark_check", in: nil, compatibleWith: nil)
-//        }
-
-// Configure the view for the selected state
-//            let cellStyle = self.filterCellStyle
-//            switch cellStyle! {
-//            case .FilterCellStyleSwitch:
-//
-//                break
-//            case .FilterCellStyleCheckMark:
-//        if selected {
-//            self.accessoryImageView.image = UIImage(named: "Checkmark_check", in: nil, compatibleWith: nil)
-//
-//        }
-//                break
-//            default:
-//                break
-//            }
     }
     
     var filterCellStyle : FilterCellStyle! {
@@ -81,9 +74,6 @@ class FiltersCell: UITableViewCell {
     
     var filter : Filter! {
         didSet {
-            
-//            print(filter)
-//            print(self.filterLabel.text)
             let cellStyle = self.filterCellStyle
             switch cellStyle! {
             case .FilterCellStyleSwitch:

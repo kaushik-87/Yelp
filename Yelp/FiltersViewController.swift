@@ -9,17 +9,34 @@
 import UIKit
 
 
-struct Filter {
+class Filter :NSObject {
+    
     var dealOffer : Bool
     var distanceFilter : String
     var sortByFilter : String
     var categories : [String]
+    override init() {
+        dealOffer = false
+        distanceFilter = "Auto"
+        sortByFilter = "Best Match"
+        categories = []
+    }
+
 }
 
+@objc protocol FiltersViewControllerDelegate {
+     @objc optional func filtersViewController(viewController: FiltersViewController, didSelectValuesForFilter filter: Filter)
+}
 
-class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersCellDelegate {
+    
+    
     @IBAction func searchWithFilters(_ sender: Any) {
                 dismiss(animated: true, completion: nil)
+        if delegate != nil {
+            delegate?.filtersViewController?(viewController: self, didSelectValuesForFilter: self.currentFilter!)
+        }
+        
     }
    
     @IBAction func cancelFilters(_ sender: Any) {
@@ -207,6 +224,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var didExpandDistanceSection : Bool = false
     var didExpandSortBySection : Bool = false
+    weak var delegate : FiltersViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -216,7 +234,9 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
                              ["Sort By" : sortByArray],
                              ["Category" : categories]]
         
-        self.currentFilter = Filter.init(dealOffer: false, distanceFilter: "0.3 miles", sortByFilter: "Rating", categories: ["Afghan", "American, New", "Canadian"])
+        //self.currentFilter = Filter()
+
+            //Filter.init(dealOffer: false, distanceFilter: "0.3 miles", sortByFilter: "Rating", categories: ["Afghan", "American, New", "Canadian"])
         self.filtersTableView.rowHeight = UITableViewAutomaticDimension
         self.filtersTableView.estimatedRowHeight = 100
         
@@ -280,6 +300,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         cell.filterLabel.text = cellTitle
         cell.filter = self.currentFilter
+        cell.delegate = self
         return cell
     }
     
@@ -374,6 +395,23 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
 
         
+    }
+    
+    func filtersCell(filterCell: FiltersCell, didChangeValue value: Bool) {
+        
+        let indexPath = self.filtersTableView.indexPath(for: filterCell) ?? IndexPath(row: 0, section: 0)
+        
+        switch indexPath.section {
+        case 0:
+            self.currentFilter?.dealOffer = value
+            break
+        case 3:
+            let categoryList : [[String : String]] = self.filtersDictionary[3]["Category"] as! [[String : String]]
+            self.currentFilter?.categories.append(categoryList[indexPath.row]["name"]!)
+            break
+        default:
+            break
+        }
     }
 
     

@@ -140,7 +140,7 @@
                     <navigationItem key="navigationItem" title="Yelp" id="bNW-gc-71L">
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="Ecw-Lq-Gqe">
                             <connections>
-                                <segue destination="cel-fU-PJN" kind="presentation" id="CTI-n9-PG7"/>
+                                <segue destination="cel-fU-PJN" kind="presentation" identifier="FiltersViewController" id="CTI-n9-PG7"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" id="Wkp-iY-HjK"/>
@@ -151,7 +151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2437.5999999999999" y="250.52473763118442"/>
+            <point key="canvasLocation" x="2034" y="219"/>
         </scene>
         <!--Filters View Controller-->
         <scene sceneID="PaF-cp-6sg">
@@ -265,7 +265,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5zB-nk-Y0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1788" y="357.57121439280365"/>
+            <point key="canvasLocation" x="1206" y="48"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BMZ-ry-BUv">
