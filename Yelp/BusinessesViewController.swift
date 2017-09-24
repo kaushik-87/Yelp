@@ -115,6 +115,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var currentFilter: Filter?
     var isMoreDataLoading = false
     var canFetchMoreResults = false
+    var loadingMoreView:InfiniteScrollActivityView?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -128,6 +129,17 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         self.businessesTableView.rowHeight = UITableViewAutomaticDimension
         self.businessesTableView.estimatedRowHeight = 100
 
+        
+        let frame = CGRect(x: 0, y: self.businessesTableView.contentSize.height, width: self.businessesTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        self.businessesTableView.addSubview(loadingMoreView!)
+        
+        var insets = self.businessesTableView.contentInset
+        insets.bottom += InfiniteScrollActivityView.defaultHeight
+        self.businessesTableView.contentInset = insets
+        
+        
         searchForBusinessWith(name: "Restaurants")
         
         self.currentFilter = Filter.init()
@@ -275,6 +287,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                 let scrollViewContentHeight = self.businessesTableView.contentSize.height
                 let scrollOffsetThreshold = scrollViewContentHeight - self.businessesTableView.bounds.size.height
                 
+                let frame = CGRect(x: 0, y: self.businessesTableView.contentSize.height, width: self.businessesTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
                 // When the user has scrolled past the threshold, start requesting
                 if(scrollView.contentOffset.y > scrollOffsetThreshold && self.businessesTableView.isDragging) {
                     isMoreDataLoading = true
@@ -285,6 +301,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                     Business.searchWithTerm(term: "Restaurants", limit: 0, offset: self.businesses.count ,completion: { (businesses: [Business]?, totalResponseCount: Int?,  error: Error?) -> Void in
                         self.isMoreDataLoading = false
                         self.canFetchMoreResults = self.businesses.count < totalResponseCount!
+                        self.loadingMoreView!.stopAnimating()
+
                         print(self.businesses.count)
                         if let businesses = businesses {
                             for business in businesses {
