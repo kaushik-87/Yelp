@@ -25,13 +25,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             
         }
 
-        Business.searchWithTerm(term: "Restaurants", sort: sortMode, categories: filter.categories, radius:radius, deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "Restaurants", sort: sortMode, categories: filter.categories, radius:radius, deals: true, completion: { (businesses: [Business]?, totalResponseCount : Int?, error: Error?) -> Void in
 
           self.businesses = businesses
           if let businesses = businesses {
               for business in businesses {
-                  print(business.name!)
-                  print(business.address!)
+//                  print(business.name!)
+//                  print(business.address!)
               }
           }
             
@@ -113,6 +113,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var businesses: [Business]!
     var currentSearchString : String = ""
     var currentFilter: Filter?
+    var isMoreDataLoading = false
+    var canFetchMoreResults = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,7 +128,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         self.businessesTableView.rowHeight = UITableViewAutomaticDimension
         self.businessesTableView.estimatedRowHeight = 100
 
-        searchForBusinessWith(name: currentSearchString)
+        searchForBusinessWith(name: "Restaurants")
         
         self.currentFilter = Filter.init()
         
@@ -148,13 +150,15 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func searchForBusinessWith(name : String) -> Void {
         let searchString = name
-        Business.searchWithTerm(term: searchString, completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: searchString, completion: { (businesses: [Business]?, totalResponseCount:Int?, error: Error?) -> Void in
             
             self.businesses = businesses
+            self.canFetchMoreResults = self.businesses.count < totalResponseCount!
+            print(self.businesses.count ?? 0)
             if let businesses = businesses {
                 for business in businesses {
                     print(business.name!)
-                    print(business.address!)
+//                    print(business.address!)
                 }
             }
             self.businessesTableView.reloadData()
@@ -263,6 +267,41 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let searchBar = self.navigationItem.titleView as? UISearchBar
         searchBar?.resignFirstResponder()
+        
+        
+        if self.canFetchMoreResults {
+            if (!isMoreDataLoading) {
+                // Calculate the position of one screen length before the bottom of the results
+                let scrollViewContentHeight = self.businessesTableView.contentSize.height
+                let scrollOffsetThreshold = scrollViewContentHeight - self.businessesTableView.bounds.size.height
+                
+                // When the user has scrolled past the threshold, start requesting
+                if(scrollView.contentOffset.y > scrollOffsetThreshold && self.businessesTableView.isDragging) {
+                    isMoreDataLoading = true
+                    
+                    
+                    
+                    // ... Code to load more results ...
+                    Business.searchWithTerm(term: "Restaurants", limit: 0, offset: self.businesses.count ,completion: { (businesses: [Business]?, totalResponseCount: Int?,  error: Error?) -> Void in
+                        self.isMoreDataLoading = false
+                        self.canFetchMoreResults = self.businesses.count < totalResponseCount!
+                        print(self.businesses.count)
+                        if let businesses = businesses {
+                            for business in businesses {
+                                print(business.name!)
+                                //                    print(business.address!)
+                                self.businesses.append(business)
+                            }
+                        }
+                        self.businessesTableView.reloadData()
+                    }
+                    )
+                    
+                    
+                }
+            }
+        }
+
     }
 
     
