@@ -314,8 +314,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                         self.businessesTableView.reloadData()
                     }
                     )
-                    
-                    
                 }
             }
         }

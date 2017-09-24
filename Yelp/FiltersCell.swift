@@ -12,6 +12,7 @@ enum FilterCellStyle {
     case FilterCellStyleSwitch
     case FilterCellStyleExpandable
     case FilterCellStyleCheckMark
+    case FilterCellStyleSeeAll
 }
 
 @objc protocol FiltersCellDelegate {
@@ -24,6 +25,8 @@ class FiltersCell: UITableViewCell {
     @IBOutlet weak var accessoryImageView: UIImageView!
     
     @IBOutlet weak var filterSwitch: UISwitch!
+    @IBOutlet weak var seeAllLabel: UILabel!
+
     weak var delegate : FiltersCellDelegate?
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,18 +51,25 @@ class FiltersCell: UITableViewCell {
             case .FilterCellStyleSwitch:
                 self.accessoryImageView.isHidden = true
                 self.filterSwitch.isHidden = false
-
+                self.seeAllLabel.isHidden = true
                 break
             case .FilterCellStyleExpandable:
                 self.accessoryImageView.isHidden = false
                 self.filterSwitch.isHidden = true
                 self.accessoryImageView.image = UIImage(named: "DownArrow", in: nil, compatibleWith: nil)
+                self.seeAllLabel.isHidden = true
                 break
             case .FilterCellStyleCheckMark:
                 self.accessoryImageView.isHidden = false
                 self.filterSwitch.isHidden = true
                 self.accessoryImageView.image = UIImage(named: "checkmark_uncheck", in: nil, compatibleWith: nil)
-
+                self.seeAllLabel.isHidden = true
+                break
+            case .FilterCellStyleSeeAll:
+                self.accessoryImageView.isHidden = true
+                self.filterSwitch.isHidden = true
+                self.filterLabel.isHidden = true
+                self.seeAllLabel.isHidden = false
                 break
             default:
                 break

@@ -44,6 +44,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     @IBOutlet weak var filtersTableView: UITableView!
     
+    var shouldShowAll = false
     let distanceArray = ["Auto", "0.3 miles", "1 mile", "5 miles", "20 miles"]
     let sortByArray = ["Best Match", "Distance", "Rating", "Most Reviewed"]
     let categories = [["name" : "Afghan", "code": "afghani"],
@@ -225,10 +226,14 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     var didExpandDistanceSection : Bool = false
     var didExpandSortBySection : Bool = false
     weak var delegate : FiltersViewControllerDelegate?
-
+    var initialCategoryList = [[String : String]]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        self.initialCategoryList.append(categories[0])
+        self.initialCategoryList.append(categories[1])
+        self.initialCategoryList.append(categories[2])
         self.filtersDictionary = [["Deal" : "Offering a Deal"],
                              ["Distance" : distanceArray],
                              ["Sort By" : sortByArray],
@@ -287,12 +292,22 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
 
             break
         case 3:
-            let categoryList : [[String : String]] = self.filtersDictionary[3]["Category"] as! [[String : String]]
-            cellTitle =  categoryList[indexPath.row]["name"]!
-            cell.filterCellStyle = FilterCellStyle.FilterCellStyleSwitch
+            if shouldShowAll == false {
+                cellTitle =  self.initialCategoryList[indexPath.row]["name"]!
+                cell.filterCellStyle = FilterCellStyle.FilterCellStyleSwitch
+
+                if indexPath.row == 2 {
+                    cell.filterCellStyle = FilterCellStyle.FilterCellStyleSeeAll
+                }
+            }
+            else {
+                let categoryList : [[String : String]] = self.filtersDictionary[3]["Category"] as! [[String : String]]
+                cellTitle =  categoryList[indexPath.row]["name"]!
+                cell.filterCellStyle = FilterCellStyle.FilterCellStyleSwitch
+            }
+            
+
             cell.filter = self.currentFilter
-
-
             break
         default:
             break
@@ -330,8 +345,14 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
 
             break
         case 3:
-            let categoryList : [[String : String]] = self.filtersDictionary[section]["Category"] as! [[String : String]]
-            rowCount =  categoryList.count
+            if shouldShowAll == false {
+                rowCount = 3
+            }
+            else{
+                let categoryList : [[String : String]] = self.filtersDictionary[section]["Category"] as! [[String : String]]
+                rowCount =  categoryList.count
+            }
+
             break
         default:
             break
@@ -390,6 +411,12 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
 
             break
+        case 3:
+            if (indexPath.row == 2){
+                self.shouldShowAll = true
+                tableView.reloadSections(IndexSet(integer:indexPath.section), with: .automatic)
+            }
+            break
         default:
             break
         }
@@ -406,8 +433,13 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.currentFilter?.dealOffer = value
             break
         case 3:
-            let categoryList : [[String : String]] = self.filtersDictionary[3]["Category"] as! [[String : String]]
-            self.currentFilter?.categories.append(categoryList[indexPath.row]["name"]!)
+            if shouldShowAll == false {
+                self.currentFilter?.categories.append(self.initialCategoryList[indexPath.row]["name"]!)
+            }
+            else{
+                let categoryList : [[String : String]] = self.filtersDictionary[3]["Category"] as! [[String : String]]
+                self.currentFilter?.categories.append(categoryList[indexPath.row]["name"]!)
+            }
             break
         default:
             break
