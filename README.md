@@ -2,7 +2,7 @@
 # Search for businesses near me
 
 
-This is an iOS demo application for displaying the Restaurants near me using Yelp API
+This is an iOS demo application for displaying the Restaurants near me using [Yelp API](https://www.yelp.com/developers).
 
 Time spent: 20 hours spent in total
 
