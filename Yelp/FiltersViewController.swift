@@ -23,6 +23,8 @@ class Filter :NSObject {
 
 }
 
+
+
 @objc protocol FiltersViewControllerDelegate {
      @objc optional func filtersViewController(viewController: FiltersViewController, didSelectValuesForFilter filter: Filter)
 }
@@ -36,6 +38,13 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             delegate?.filtersViewController?(viewController: self, didSelectValuesForFilter: self.currentFilter!)
         }
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor(red:0.83, green:0.14, blue:0.14, alpha:1.0)
+        self.navigationController?.navigationBar.isTranslucent = false
     }
    
     @IBAction func cancelFilters(_ sender: Any) {

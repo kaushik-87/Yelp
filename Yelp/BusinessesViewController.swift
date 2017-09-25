@@ -12,7 +12,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if (isMapView) {
             self.businessesTableView.frame = self.view.bounds; //grab the view of a separate VC
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Map", style: .plain, target: self, action: #selector(switchViewAction(_:)))
+            let rightBarButton = UIBarButtonItem.init(title: "Map", style: .plain, target: self, action: #selector(switchViewAction(_:)))
+            rightBarButton.tintColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
 
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationDuration(1.0)
@@ -23,8 +24,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
         } else {
             self.mapViewController?.view.frame = self.view.bounds; //grab the view of a separate VC
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "List", style: .plain, target: self, action: #selector(switchViewAction(_:)))
-
+            let rightBarButton = UIBarButtonItem.init(title: "List", style: .plain, target: self, action: #selector(switchViewAction(_:)))
+            rightBarButton.tintColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+            self.navigationItem.rightBarButtonItem = rightBarButton
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationDuration(1.0)
             UIView.setAnimationTransition(.flipFromLeft, for: (self.view)!, cache: true)
@@ -160,6 +162,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var mapViewController : MapViewController?
     let locationManager  = YelpLocationManager.sharedInstance
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor(red:0.83, green:0.14, blue:0.14, alpha:1.0)
+        self.navigationController?.navigationBar.isTranslucent = false
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -192,6 +201,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         self.currentFilter = Filter.init()
         
         self.mapViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MapViewController") as? MapViewController
+        self.mapViewController?.navController = self.navigationController
          //Example of Yelp search with more search options specified
 //        Business.searchWithTerm(term: "Restaurants", sort: YelpSortMode.distance, categories: ["asianfusion", "burgers"], deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
 //            
@@ -265,6 +275,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
 
                 destinationVC.business = selectedBusiness
+                
                 
             }
         }

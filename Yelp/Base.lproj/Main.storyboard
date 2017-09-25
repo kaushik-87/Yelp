@@ -140,11 +140,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="Yelp" id="bNW-gc-71L">
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="Ecw-Lq-Gqe">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="cel-fU-PJN" kind="presentation" identifier="FiltersViewController" id="CTI-n9-PG7"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Map" id="Wkp-iY-HjK">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="switchViewAction:" destination="2xI-yr-O5N" id="oXx-OI-Heb"/>
                             </connections>
@@ -425,7 +427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dLl-s1-X1y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3873" y="5"/>
+            <point key="canvasLocation" x="3876" y="-310"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BMZ-ry-BUv">
