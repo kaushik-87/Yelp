@@ -250,8 +250,43 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             destinationVC.currentFilter = self.currentFilter
             destinationVC.delegate = self
         }
+        else if segue.identifier == "showDetail" {
+            
+            if let cell = sender as? BusinessCell {
+                let indexPath = self.businessesTableView.indexPath(for: cell)
+                
+                let selectedBusiness = self.businesses[(indexPath?.row)!]
+                
+//                guard let filtersNavController = segue.destination as? UINavigationController else {
+//                    return
+//                }
+                guard let destinationVC = segue.destination as? BusinessDetailViewController else {
+                    return
+                }
+
+                destinationVC.business = selectedBusiness
+                
+            }
+        }
+
     }
  
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+//        let selectedBusiness = self.businesses[indexPath.row]
+//        
+//        let businessDetailView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "BusinessDetailViewController") as? BusinessDetailViewController
+//        self.navigationController?.pushViewController(businessDetailView!, animated: true)
+//        
+//        businessDetailView?.loadViewForBusiness(business: selectedBusiness)
+        
+        
+    }
+
+    
+    
     
     
     public func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
