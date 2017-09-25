@@ -45,6 +45,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.navigationController?.navigationBar.barTintColor = UIColor(red:0.83, green:0.14, blue:0.14, alpha:1.0)
         self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)]
     }
    
     @IBAction func cancelFilters(_ sender: Any) {

@@ -50,6 +50,19 @@ class BusinessDetailViewController: UIViewController {
             self.businessMapview.addAnnotation(annotation)
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let left = UIBarButtonItem.init(title: "Back", style: .plain, target: self, action: #selector(backButtonAction))
+        left.tintColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+        self.navigationItem.leftBarButtonItem = left
+        
+    }
+    
+    func backButtonAction() -> Void {
+        self.navigationController?.popViewController(animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         

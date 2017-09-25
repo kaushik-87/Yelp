@@ -160,7 +160,7 @@
             </objects>
             <point key="canvasLocation" x="2034" y="219"/>
         </scene>
-        <!--Filters View Controller-->
+        <!--Filters-->
         <scene sceneID="PaF-cp-6sg">
             <objects>
                 <viewController id="oit-4C-tn7" customClass="FiltersViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
@@ -247,13 +247,15 @@
                             <constraint firstItem="iBm-jR-kSO" firstAttribute="leading" secondItem="ygs-Hm-vqg" secondAttribute="leading" id="z3Z-OC-AeR"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="H4B-sp-8ll">
+                    <navigationItem key="navigationItem" title="Filters" id="H4B-sp-8ll">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="pzr-5C-gTZ">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="cancelFilters:" destination="oit-4C-tn7" id="yYv-FQ-JZt"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Search" id="XBR-JJ-wle">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="searchWithFilters:" destination="oit-4C-tn7" id="0gY-Nb-Z9Q"/>
                             </connections>
