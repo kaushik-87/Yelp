@@ -143,15 +143,10 @@
                                 <segue destination="cel-fU-PJN" kind="presentation" identifier="FiltersViewController" id="CTI-n9-PG7"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Map" id="Wkp-iY-HjK">
-                            <connections>
-                                <action selector="switchViewAction:" destination="2xI-yr-O5N" id="fdB-Am-aBg"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="Wkp-iY-HjK"/>
                     </navigationItem>
                     <connections>
                         <outlet property="businessesTableView" destination="Jmq-lA-w9B" id="8D5-Ff-e3y"/>
-                        <outletCollection property="switchViewButton" destination="Wkp-iY-HjK" collectionClass="NSMutableArray" id="zcm-30-C6T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -188,9 +183,9 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z7U-Jy-rjB">
-                                                    <rect key="frame" x="318" y="8" width="51" height="43.5"/>
+                                                    <rect key="frame" x="318" y="8" width="47" height="43.5"/>
                                                 </switch>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="yyM-TX-e5M">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="yyM-TX-e5M">
                                                     <rect key="frame" x="316" y="8" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="UrJ-og-rpk"/>
@@ -205,7 +200,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Z7U-Jy-rjB" secondAttribute="trailing" constant="8" id="1cK-bN-jmU"/>
+                                                <constraint firstAttribute="trailing" secondItem="Z7U-Jy-rjB" secondAttribute="trailing" constant="12" id="1cK-bN-jmU"/>
                                                 <constraint firstAttribute="bottom" secondItem="Gpd-nK-nII" secondAttribute="bottom" constant="10" id="2b5-W0-K58"/>
                                                 <constraint firstItem="yyM-TX-e5M" firstAttribute="centerY" secondItem="600-k5-xgz" secondAttribute="centerY" id="4Ws-Wy-cQw"/>
                                                 <constraint firstItem="Z7U-Jy-rjB" firstAttribute="top" secondItem="66d-EB-7Wg" secondAttribute="top" constant="8" id="GOi-fC-nT5"/>
@@ -263,7 +258,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8P-7F-kv7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4188" y="250.52473763118442"/>
+            <point key="canvasLocation" x="3962" y="99"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FOM-a3-J2a">
@@ -308,7 +303,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="businessesMapView" destination="xdz-Sz-YtD" id="ZGl-LO-SQS"/>
+                        <outlet property="businessesMapView" destination="xdz-Sz-YtD" id="6Bx-XS-Xmr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dLl-s1-X1y" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -2,25 +2,15 @@
 //  BusinessesViewController.swift
 //  Yelp
 //
-//  Created by Timothy Lee on 4/23/15.
-//  Copyright (c) 2015 Timothy Lee. All rights reserved.
-//
+
 
 import UIKit
 import CoreLocation
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, FiltersViewControllerDelegate {
     
     @IBAction func switchViewAction(_ sender: Any) {
-        if isMapView {
-            print("load listView")
-        }
-        else{
-            print("load mapView")
-        }
         
-        
-        if (isMapView) { //transition to view 2
-            
+        if (isMapView) {
             self.businessesTableView.frame = self.view.bounds; //grab the view of a separate VC
             self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Map", style: .plain, target: self, action: #selector(switchViewAction(_:)))
 
@@ -32,8 +22,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             UIView.commitAnimations()
 
         } else {
-            //transition to view 1
-            
             self.mapViewController?.view.frame = self.view.bounds; //grab the view of a separate VC
             self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "List", style: .plain, target: self, action: #selector(switchViewAction(_:)))
 
@@ -72,16 +60,23 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
         Business.searchWithTerm(term: "Restaurants", sort: sortMode, categories: filter.categories, radius:radius, deals: true, completion: { (businesses: [Business]?, totalResponseCount : Int?, error: Error?) -> Void in
 
-          self.businesses = businesses
-          if let businesses = businesses {
-              for business in businesses {
-//                  print(business.name!)
-//                  print(business.address!)
-              }
-          }
-            
-            
-        self.businessesTableView.reloadData()
+            if (businesses != nil) {
+                
+                self.businesses = businesses
+                self.canFetchMoreResults = self.businesses.count < totalResponseCount!
+                if let businesses = businesses {
+                    for business in businesses {
+                        //                  print(business.name!)
+                        //                  print(business.address!)
+                    }
+                }
+                
+                
+                self.businessesTableView.reloadData()
+            }else{
+                self.canFetchMoreResults = false
+            }
+
           
       }
   )
@@ -377,6 +372,5 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         }
 
     }
-
     
 }

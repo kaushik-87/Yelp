@@ -3,7 +3,6 @@
 //  Yelp
 //
 //  Created by Kaushik on 9/23/17.
-//  Copyright © 2017 Timothy Lee. All rights reserved.
 //
 
 import UIKit

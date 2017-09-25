@@ -3,8 +3,7 @@
 //  Yelp
 //
 //  Created by Kaushik on 9/23/17.
-//  Copyright © 2017 Timothy Lee. All rights reserved.
-//
+
 
 import UIKit
 
@@ -52,17 +51,21 @@ class FiltersCell: UITableViewCell {
                 self.accessoryImageView.isHidden = true
                 self.filterSwitch.isHidden = false
                 self.seeAllLabel.isHidden = true
+                self.filterLabel.isHidden = false
                 break
             case .FilterCellStyleExpandable:
                 self.accessoryImageView.isHidden = false
                 self.filterSwitch.isHidden = true
-                self.accessoryImageView.image = UIImage(named: "DownArrow", in: nil, compatibleWith: nil)
+                self.accessoryImageView.image = UIImage(named: "dropdown", in: nil, compatibleWith: nil)
                 self.seeAllLabel.isHidden = true
+                self.filterLabel.isHidden = false
+
                 break
             case .FilterCellStyleCheckMark:
                 self.accessoryImageView.isHidden = false
+                self.filterLabel.isHidden = false
                 self.filterSwitch.isHidden = true
-                self.accessoryImageView.image = UIImage(named: "checkmark_uncheck", in: nil, compatibleWith: nil)
+                self.accessoryImageView.image = UIImage(named: "uncheck", in: nil, compatibleWith: nil)
                 self.seeAllLabel.isHidden = true
                 break
             case .FilterCellStyleSeeAll:
@@ -97,13 +100,13 @@ class FiltersCell: UITableViewCell {
                 break
             case .FilterCellStyleCheckMark:
                 if(filter.distanceFilter == self.filterLabel.text){
-                    self.accessoryImageView.image = UIImage(named: "Checkmark_check", in: nil, compatibleWith: nil)
+                    self.accessoryImageView.image = UIImage(named: "check", in: nil, compatibleWith: nil)
                 }
                 else if(filter.sortByFilter == self.filterLabel.text){
-                    self.accessoryImageView.image = UIImage(named: "Checkmark_check", in: nil, compatibleWith: nil)
+                    self.accessoryImageView.image = UIImage(named: "check", in: nil, compatibleWith: nil)
                 }
                 else{
-                    self.accessoryImageView.image = UIImage(named: "checkmark_uncheck", in: nil, compatibleWith: nil)
+                    self.accessoryImageView.image = UIImage(named: "uncheck", in: nil, compatibleWith: nil)
 
                 }
                 break
