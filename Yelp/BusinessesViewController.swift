@@ -14,7 +14,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             self.businessesTableView.frame = self.view.bounds; //grab the view of a separate VC
             let rightBarButton = UIBarButtonItem.init(title: "Map", style: .plain, target: self, action: #selector(switchViewAction(_:)))
             rightBarButton.tintColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
-
+            self.navigationItem.rightBarButtonItem = rightBarButton
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationDuration(1.0)
             UIView.setAnimationTransition(.flipFromLeft, for: (self.view)!, cache: true)
