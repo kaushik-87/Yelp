@@ -7,8 +7,53 @@
 //
 
 import UIKit
-
+import CoreLocation
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, FiltersViewControllerDelegate {
+    
+    @IBAction func switchViewAction(_ sender: Any) {
+        if isMapView {
+            print("load listView")
+        }
+        else{
+            print("load mapView")
+        }
+        
+        
+        if (isMapView) { //transition to view 2
+            
+            self.businessesTableView.frame = self.view.bounds; //grab the view of a separate VC
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Map", style: .plain, target: self, action: #selector(switchViewAction(_:)))
+
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationDuration(1.0)
+            UIView.setAnimationTransition(.flipFromLeft, for: (self.view)!, cache: true)
+            self.mapViewController?.view.removeFromSuperview()
+            self.view.addSubview(self.businessesTableView)
+            UIView.commitAnimations()
+
+        } else {
+            //transition to view 1
+            
+            self.mapViewController?.view.frame = self.view.bounds; //grab the view of a separate VC
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "List", style: .plain, target: self, action: #selector(switchViewAction(_:)))
+
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationDuration(1.0)
+            UIView.setAnimationTransition(.flipFromLeft, for: (self.view)!, cache: true)
+            self.mapViewController?.view.removeFromSuperview()
+            self.view.addSubview((self.mapViewController?.view)!)
+            UIView.commitAnimations()
+            self.mapViewController?.loadMapFor(businesses: self.businesses)
+        }
+        
+        
+        
+        
+        
+        self.isMapView = self.isMapView ? false : true
+    }
+    
+    @IBOutlet var switchViewButton: [UIBarButtonItem]!
     
     func filtersViewController(viewController: FiltersViewController, didSelectValuesForFilter filter: Filter) {
         self.currentFilter = filter
@@ -116,8 +161,15 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var isMoreDataLoading = false
     var canFetchMoreResults = false
     var loadingMoreView:InfiniteScrollActivityView?
+    var isMapView = false
+    var mapViewController : MapViewController?
+    let locationManager  = YelpLocationManager.sharedInstance
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onUserLocation), name: NSNotification.Name(rawValue: "didReceiveUserLocation"), object: nil)
+        locationManager.requestForUserLocation()
         
         let titleViewFrame = self.navigationItem.titleView?.frame ?? CGRect(x: 0, y: 0, width: 320, height: 44)
         let searchView: UISearchBar = UISearchBar.init(frame: CGRect(origin: CGPoint.init(x: 0, y: 0), size: CGSize.init(width: titleViewFrame.size.width, height: titleViewFrame.size.height )))
@@ -140,10 +192,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         self.businessesTableView.contentInset = insets
         
         
-        searchForBusinessWith(name: "Restaurants")
+        
         
         self.currentFilter = Filter.init()
         
+        self.mapViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MapViewController") as? MapViewController
          //Example of Yelp search with more search options specified
 //        Business.searchWithTerm(term: "Restaurants", sort: YelpSortMode.distance, categories: ["asianfusion", "burgers"], deals: true, completion: { (businesses: [Business]?, error: Error?) -> Void in
 //            
@@ -160,13 +213,18 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    func onUserLocation() -> Void {
+        NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "didReceiveUserLocation"), object: nil)
+        searchForBusinessWith(name: "Restaurants")
+        
+    }
+    
     func searchForBusinessWith(name : String) -> Void {
         let searchString = name
         Business.searchWithTerm(term: searchString, completion: { (businesses: [Business]?, totalResponseCount:Int?, error: Error?) -> Void in
             
             self.businesses = businesses
             self.canFetchMoreResults = self.businesses.count < totalResponseCount!
-            print(self.businesses.count ?? 0)
             if let businesses = businesses {
                 for business in businesses {
                     print(business.name!)

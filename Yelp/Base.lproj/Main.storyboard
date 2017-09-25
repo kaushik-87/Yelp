@@ -143,10 +143,15 @@
                                 <segue destination="cel-fU-PJN" kind="presentation" identifier="FiltersViewController" id="CTI-n9-PG7"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="Wkp-iY-HjK"/>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="Wkp-iY-HjK">
+                            <connections>
+                                <action selector="switchViewAction:" destination="2xI-yr-O5N" id="fdB-Am-aBg"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="businessesTableView" destination="Jmq-lA-w9B" id="8D5-Ff-e3y"/>
+                        <outletCollection property="switchViewButton" destination="Wkp-iY-HjK" collectionClass="NSMutableArray" id="zcm-30-C6T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -277,6 +282,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5zB-nk-Y0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1206" y="48"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="5hB-jM-92a">
+            <objects>
+                <viewController storyboardIdentifier="MapViewController" id="2jr-ff-1tp" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kgY-NE-lIM"/>
+                        <viewControllerLayoutGuide type="bottom" id="efa-Ty-X2G"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OfL-5Q-Rep">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xdz-Sz-YtD">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xdz-Sz-YtD" firstAttribute="leading" secondItem="OfL-5Q-Rep" secondAttribute="leading" id="RqE-2Q-tfh"/>
+                            <constraint firstItem="xdz-Sz-YtD" firstAttribute="top" secondItem="OfL-5Q-Rep" secondAttribute="top" id="nfp-mn-aje"/>
+                            <constraint firstAttribute="trailing" secondItem="xdz-Sz-YtD" secondAttribute="trailing" id="vX5-vZ-GyV"/>
+                            <constraint firstItem="efa-Ty-X2G" firstAttribute="top" secondItem="xdz-Sz-YtD" secondAttribute="bottom" id="xhF-6U-tcP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="businessesMapView" destination="xdz-Sz-YtD" id="ZGl-LO-SQS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dLl-s1-X1y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2740" y="-150.67466266866569"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BMZ-ry-BUv">

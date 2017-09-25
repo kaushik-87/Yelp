@@ -58,7 +58,13 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         // Default the location to San Francisco "37.785771,-122.406165"
         // "37.368832, -122.036346"
         //
-        var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": "37.368832, -122.036346" as AnyObject]
+        let locationManager = YelpLocationManager.sharedInstance
+
+        let latInString = "\(locationManager.userLatitude!)"
+        let longInString = "\(locationManager.userLongitude!)"
+
+        
+        var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": "\(latInString), \(longInString)" as AnyObject]
         
         if sort != nil {
             parameters["sort"] = sort!.rawValue as AnyObject?
